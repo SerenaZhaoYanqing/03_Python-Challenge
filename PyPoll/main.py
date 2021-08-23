@@ -1,6 +1,5 @@
 #Week3 homework Py Poll 
 import os
-from numpy import row_stack
 import pandas as pd 
 import csv
 csvpath = os.path.join('Resources', 'election_data.csv')
