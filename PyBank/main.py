@@ -1,6 +1,4 @@
 #Week3 homework Py Bank
-print("Financial Analysis")
-print("----------------------------")
 import os 
 import csv
 #find relative csv path ( compared with current main.py file)
@@ -18,21 +16,33 @@ with open(csvpath) as budgetfile:
     profit_losses = [int(row[1]) for row in data]
     #The total number of months included in the dataset, use set to remove duplicates then use len function 
     total_month_count=len(set(date))
-    print("Total Months:"+str(total_month_count))
     #The net total amount of "Profit/Losses" over the entire period
     total_of_profit_losses =int(sum(profit_losses))
-    print("Total : $"+str(total_of_profit_losses))
     #create new list for the changes in profit 
     change=[]
     for i in range(1,len(profit_losses)):
         change.append((int(profit_losses[i]) - int(profit_losses[i-1])))
     #using build function to calculate max, min, and average (round 2 decimal for average)
     average_change=round((sum(change)/len(change)),2)
-    print("Average  Change: $"+str(average_change))
     greatest_increase=max(change)
-    print("Greatest Increase in Profits:"+str(date[change.index(max(change))+1]) + " " + "$" + str(greatest_increase))
     greatest_decrease=min(change)
-    print("Greatest Decrease in Profits:"+str(date[change.index(min(change))+1]) + " " + "$" + str(greatest_decrease))
 
-        
-    
+#Specify the file to write to
+output_path = os.path.join("Analysis", "result.txt")
+#Open the file using "write" mode. Specify the variable to hold the contents
+with open(output_path, 'w', newline='') as csvfile:
+     # Initialize csv.writer
+    csvwriter = csv.writer(csvfile, delimiter=',')
+    # Reporting 
+    csvwriter.writerow(["Financial Analysis"])
+    csvwriter.writerow(["----------------------------"])
+    csvwriter.writerow(["Total Months:"+str(total_month_count)])    
+    csvwriter.writerow(["Total : $"+str(total_of_profit_losses)])
+    csvwriter.writerow(["Average  Change: $"+str(average_change)])
+    csvwriter.writerow(["Greatest Increase in Profits:"+str(date[change.index(max(change))+1]) + " " + "$" + str(greatest_increase)])
+    csvwriter.writerow(["Greatest Decrease in Profits:"+str(date[change.index(min(change))+1]) + " " + "$" + str(greatest_decrease)])
+# print readed csv 
+with open(output_path, 'r', newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    for row in csvreader:
+        print(row[0])
